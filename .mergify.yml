@@ -15,7 +15,7 @@ pull_request_rules:
     conditions:
       - check-success=unit
       - "#approved-reviews-by>=1"
-      - base=main
+      - base=master
       - files~=^[^\/]+\/staging\/?(?:[^\/]+\/?)*$
       - label=staging-ci-in-progress
       - label=rollback
@@ -25,7 +25,7 @@ pull_request_rules:
   - name: automatic merge of staging file change
     conditions:
       - "#approved-reviews-by>=1"
-      - base=main
+      - base=master
       - check-success=unit
       - files~=^[^\/]+\/staging\/?(?:[^\/]+\/?)*$
       - label=staging-ci-in-progress
@@ -35,7 +35,7 @@ pull_request_rules:
   - name: automatic merge for other changes not related to staging
     conditions:
       - "#approved-reviews-by>=1"
-      - base=main
+      - base=master
       - check-success=unit
     actions:
       merge:
