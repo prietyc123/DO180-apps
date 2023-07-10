@@ -2,6 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
   name: unit
+  namespace: testing
   annotations:
     pipelinesascode.tekton.dev/on-event: "[pull_request]"
     pipelinesascode.tekton.dev/on-target-branch: "[refs/heads/*]"
@@ -9,6 +10,7 @@ spec:
   pipelineSpec:
     tasks:
       - name: example-task
+        namespace: testing
         taskSpec:
             steps:
               - image: quay.io/openshift-pipeline/ci
