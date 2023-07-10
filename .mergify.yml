@@ -28,7 +28,7 @@ pull_request_rules:
       - base=main
       - check-success=unit
       - files~=^[^\/]+\/staging\/?(?:[^\/]+\/?)*$
-      - label= staging-ci-in-progress
+      - label=staging-ci-in-progress
     actions:
       queue:
         method: merge
