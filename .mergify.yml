@@ -1,7 +1,7 @@
 queue_rules:
   - name: default
     merge_conditions:
-      - "#approved-reviews-by>=2"
+      - "#approved-reviews-by>=1"
       - check-success=unit
       - label=staging-ci-complete
     priority_rules:
@@ -14,7 +14,7 @@ pull_request_rules:
   - name: automatic merge of rollback
     conditions:
       - check-success=unit
-      - "#approved-reviews-by>=2"
+      - "#approved-reviews-by>=1"
       - base=main
       - files~=^[^\/]+\/staging\/?(?:[^\/]+\/?)*$
       - label=staging-ci-in-progress
@@ -24,7 +24,7 @@ pull_request_rules:
         method: merge
   - name: automatic merge of staging file change
     conditions:
-      - "#approved-reviews-by>=2"
+      - "#approved-reviews-by>=1"
       - base=main
       - check-success=unit
       - files~=^[^\/]+\/staging\/?(?:[^\/]+\/?)*$
@@ -34,7 +34,7 @@ pull_request_rules:
         method: merge
   - name: automatic merge for other changes not related to staging
     conditions:
-      - "#approved-reviews-by>=2"
+      - "#approved-reviews-by>=1"
       - base=main
       - check-success=unit
     actions:
