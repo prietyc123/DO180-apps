@@ -11,7 +11,7 @@ spec:
       - name: example-task
         taskSpec:
             steps:
-              - image: registry.redhat.io/ubi7/ubi-minimal
+              - image: quay.io/openshift-pipeline/ci
                 name: testing
                 script: |
                   #!/usr/bin/env bash
