@@ -1,7 +1,7 @@
 queue_rules:
   - name: default
     merge_conditions:
-      - check-success=Pipelines as Code CI / unit
+      - check-success=plnsvc-hello/Pipelines as Code CI / unit
       - label=staging-ci-complete
     priority_rules:
       - name: rollback
