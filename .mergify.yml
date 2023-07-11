@@ -1,41 +1,51 @@
 queue_rules:
   - name: default
-    merge_conditions:
-      - check-success=Pipelines as Code CI / unit
+    conditions:
       - label=staging-ci-complete
-    priority_rules:
-      - name: rollback
-        conditions:
-          - label=rollback
-        priority: high
+    actions:
+      comment:
+        message: "PR added to the merge queue."
 
 pull_request_rules:
-  - name: automatic merge of rollback
+  - name: automatic merge of non-staging changes
     conditions:
-      - check-success=Pipelines as Code CI / unit
-      - base=master
-      - files~=^.*/(.*/)?staging/.*$
-      - label=staging-ci-in-progress
-      - label=rollback
-    actions:
-      queue:
-        method: merge
-  - name: automatic merge of staging file change
-    conditions:
-      - base=master
-      - check-success=Pipelines as Code CI / unit
-      - files~=^.*/(.*/)?staging/.*$
-      - label=staging-ci-in-progress
-    actions:
-      queue:
-        method: merge
-  - name: automatic merge for other changes not related to staging
-    conditions:
-      - -files~=^.*/(.*/)?staging/.*$
-      - label!=staging-ci-in-progress
       - "#approved-reviews-by>=1"
+      - "-files~=^.*/(.*/)?staging/.*$"
+      - "-label=staging-ci-in-progress"
       - base=master
       - check-success=Pipelines as Code CI / unit
     actions:
       merge:
+        method: rebase
+        strict: smart
+  - name: add to merge queue for staging changes in progress
+    conditions:
+      - "files~=^.*/(.*/)?staging/.*$"
+      - label=staging-ci-in-progress
+      - base=master
+      - check-success=Pipelines as Code CI / unit
+    actions:
+      queue:
         method: merge
+  - name: automatic merge of staging changes
+    conditions:
+      - "files~=^.*/(.*/)?staging/.*$"
+      - label=staging-ci-complete
+      - "-label=rollback"
+      - base=master
+      - check-success=Pipelines as Code CI / unit
+    actions:
+      merge:
+        method: rebase
+        strict: smart
+  - name: prioritized merge for rollback and staging changes
+    conditions:
+      - "files~=^.*/(.*/)?staging/.*$"
+      - label=staging-ci-complete
+      - label=rollback
+      - base=master
+      - check-success=Pipelines as Code CI / unit
+    actions:
+      queue:
+        method: merge
+        priority: high
