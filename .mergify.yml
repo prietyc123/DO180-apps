@@ -20,7 +20,6 @@ pull_request_rules:
         strict: smart
   - name: add to merge queue for staging changes in progress
     conditions:
-      - "#approved-reviews-by>=1"
       - "files~=^.*/(.*/)?staging/.*$"
       - label=staging-ci-in-progress
       - base=master
@@ -30,7 +29,6 @@ pull_request_rules:
         method: merge
   - name: automatic merge of staging changes
     conditions:
-      - "#approved-reviews-by>=1"
       - "files~=^.*/(.*/)?staging/.*$"
       - label=staging-ci-complete
       - "-label=rollback"
@@ -42,7 +40,6 @@ pull_request_rules:
         strict: smart
   - name: prioritized merge for rollback and staging changes
     conditions:
-      - "#approved-reviews-by>=1"
       - "files~=^.*/(.*/)?staging/.*$"
       - label=staging-ci-complete
       - label=rollback
