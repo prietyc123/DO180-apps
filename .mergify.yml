@@ -12,7 +12,7 @@ pull_request_rules:
       - "#approved-reviews-by>=1"
       - "-files~=^.*/(.*/)?staging/.*$"
       - "-label=staging-ci-in-progress"
-      - base=main
+      - base=master
       - check-success=Pipelines as Code CI / unit
     actions:
       merge:
@@ -23,7 +23,7 @@ pull_request_rules:
       - "#approved-reviews-by>=1"
       - "files~=^.*/(.*/)?staging/.*$"
       - label=staging-ci-in-progress
-      - base=main
+      - base=master
       - check-success=Pipelines as Code CI / unit
     actions:
       queue:
@@ -34,7 +34,7 @@ pull_request_rules:
       - "files~=^.*/(.*/)?staging/.*$"
       - label=staging-ci-complete
       - "-label=rollback"
-      - base=main
+      - base=master
       - check-success=Pipelines as Code CI / unit
     actions:
       merge:
@@ -46,7 +46,7 @@ pull_request_rules:
       - "files~=^.*/(.*/)?staging/.*$"
       - label=staging-ci-complete
       - label=rollback
-      - base=main
+      - base=master
       - check-success=Pipelines as Code CI / unit
     actions:
       queue:
