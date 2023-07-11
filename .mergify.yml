@@ -1,10 +1,13 @@
 queue_rules:
   - name: default
-    conditions:
+    merge_conditions:
+      - check-success=Pipelines as Code CI / unit
       - label=staging-ci-complete
-    actions:
-      comment:
-        message: "PR added to the merge queue."
+    priority_rules:
+      - name: rollback
+        conditions:
+          - label=rollback
+        priority: high
 
 pull_request_rules:
   - name: automatic merge of non-staging changes
@@ -34,8 +37,8 @@ pull_request_rules:
       - base=master
       - check-success=Pipelines as Code CI / unit
     actions:
-      merge:
-        method: rebase
+      queue:
+        name: default
   - name: prioritized merge for rollback and staging changes
     conditions:
       - "files~=^.*/(.*/)?staging/.*$"
@@ -45,5 +48,4 @@ pull_request_rules:
       - check-success=Pipelines as Code CI / unit
     actions:
       queue:
-        method: merge
-      priority: high
+        name: default
