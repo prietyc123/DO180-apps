@@ -1,7 +1,6 @@
 queue_rules:
   - name: default
     merge_conditions:
-      - "#approved-reviews-by>=1"
       - check-success=Pipelines as Code CI / unit
       - label=staging-ci-complete
     priority_rules:
@@ -14,9 +13,8 @@ pull_request_rules:
   - name: automatic merge of rollback
     conditions:
       - check-success=Pipelines as Code CI / unit
-      - "#approved-reviews-by>=1"
       - base=master
-      - -files~=^[^\/]+\/staging\/?(?:[^\/]+\/?)*$
+      - files~=^.*/(.*/)?staging/.*$
       - label=staging-ci-in-progress
       - label=rollback
     actions:
@@ -24,16 +22,17 @@ pull_request_rules:
         method: merge
   - name: automatic merge of staging file change
     conditions:
-      - "#approved-reviews-by>=1"
       - base=master
       - check-success=Pipelines as Code CI / unit
-      - -files~=^[^\/]+\/staging\/?(?:[^\/]+\/?)*$
+      - files~=^.*/(.*/)?staging/.*$
       - label=staging-ci-in-progress
     actions:
       queue:
         method: merge
   - name: automatic merge for other changes not related to staging
     conditions:
+      - -files~=^.*/(.*/)?staging/.*$
+      - label!=staging-ci-in-progress
       - "#approved-reviews-by>=1"
       - base=master
       - check-success=Pipelines as Code CI / unit
