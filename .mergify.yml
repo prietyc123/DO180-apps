@@ -24,28 +24,20 @@ pull_request_rules:
     conditions:
       - "files~=^.*/(.*/)?staging/.*$"
       - label=staging-ci-in-progress
-      - base=master
-      - check-success=Pipelines as Code CI / unit
-    actions:
-      queue:
-        method: merge
-  - name: automatic merge of staging changes
-    conditions:
-      - "files~=^.*/(.*/)?staging/.*$"
-      - label=staging-ci-complete
       - "-label=rollback"
       - base=master
       - check-success=Pipelines as Code CI / unit
     actions:
       queue:
+        method: merge
         name: default
   - name: prioritized merge for rollback and staging changes
     conditions:
       - "files~=^.*/(.*/)?staging/.*$"
-      - label=staging-ci-complete
       - label=rollback
       - base=master
       - check-success=Pipelines as Code CI / unit
     actions:
       queue:
+        method: merge
         name: default
