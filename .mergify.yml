@@ -1,6 +1,7 @@
 queue_rules:
   - name: default
     merge_conditions:
+      - "#approved-reviews-by>=1"
       - check-success=Pipelines as Code CI / unit
       - label=staging-ci-complete
     priority_rules:
@@ -22,6 +23,7 @@ pull_request_rules:
         method: rebase
   - name: add to merge queue for staging changes in progress
     conditions:
+      - "#approved-reviews-by>=1"
       - "files~=^.*/(.*/)?staging/.*$"
       - label=staging-ci-in-progress
       - "-label=rollback"
@@ -33,6 +35,7 @@ pull_request_rules:
         name: default
   - name: prioritized merge for rollback and staging changes
     conditions:
+      - "#approved-reviews-by>=1"
       - "files~=^.*/(.*/)?staging/.*$"
       - label=rollback
       - base=master
